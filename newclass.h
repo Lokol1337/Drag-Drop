@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef NEWCLASS_H
+#define NEWCLASS_H
 #include <QFrame>
 
 class QDragEnterEvent;
@@ -16,4 +16,4 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 };
 
-#endif // WINDOW_H
+#endif // NEWCLASS_H
