@@ -50,10 +50,10 @@
 
 #include <QApplication>
 #include <QHBoxLayout>
+#include <QPainter>
 
-#include "dragwidget.h"
-#include "window.h"
 #include "newclass.h"
+#include "dragwidget.h"
 
 
 int main(int argc, char *argv[])
@@ -63,12 +63,14 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QWidget mainWidget;
-    mainWidget.setMinimumSize(1024,768);
+    mainWidget.setFixedSize(1024,768);
+
     QVBoxLayout *verticalLayout = new QVBoxLayout(&mainWidget);
 
+
     verticalLayout->addWidget(new newClass);
-    verticalLayout->addWidget(new window);
     verticalLayout->addWidget(new DragWidget);
+
 
 
     mainWidget.setWindowTitle(QObject::tr("Draggable Icons"));

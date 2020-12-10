@@ -1,6 +1,7 @@
 #ifndef NEWCLASS_H
 #define NEWCLASS_H
 #include <QFrame>
+#include "label.h"
 
 class QDragEnterEvent;
 class QDropEvent;
@@ -9,11 +10,8 @@ class newClass: public QFrame
 {
 public:
     newClass(QWidget *parent = nullptr);
-protected:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void dragMoveEvent(QDragMoveEvent *event) override;
-    void dropEvent(QDropEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
+    void DropBot(QWidget *parent = nullptr);
+
 };
 
-#endif // NEWCLASS_H
+#endif // WINDOW_H
