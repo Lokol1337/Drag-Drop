@@ -52,6 +52,9 @@
 #define DRAGWIDGET_H
 
 #include <QFrame>
+#include <QPainter>
+#include "label.h"
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 class QDragEnterEvent;
@@ -63,12 +66,18 @@ class DragWidget : public QFrame
 {
 public:
     explicit DragWidget(QWidget *parent = nullptr);
-
+    int CastRand();
+private:
+    qreal x1 = 0;
+    qreal y1 = 400;
+    qreal x2 = 101;
+    qreal y2 = 400;
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event)override;
+    //void paintEvent(QPaintEvent *event) override;
 };
 //! [0]
 

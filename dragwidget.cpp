@@ -51,106 +51,191 @@
 #include <QtWidgets>
 
 #include "dragwidget.h"
+#include "label.h"
+#include "QVector"
+#include <QTime>
+#include <random>
 
-//! [0]
+
+bool *kto = new bool(5);
+int bufKto[5];
+label *bufLabel[5];
+label *bufHandLabel[5];
+label *dragBuf;
+int money = 10;
+QString allCardsName[3];
+int allCardCHD[3][4];
+
+
+int DragWidget::CastRand(){
+    QTime t  = QTime::currentTime();
+        return t.msec();
+}
+
 DragWidget::DragWidget(QWidget *parent)
     : QFrame(parent)
 {
+    allCardsName[0] = ":/images/boat.png";
+    allCardCHD[0][1] = 3;
+    allCardCHD[0][2] = 500;
+    allCardCHD[0][3] = 100;
+
+    allCardsName[1] = ":/images/car.png";
+    allCardCHD[1][1] = 4;
+    allCardCHD[1][2] = 500;
+    allCardCHD[1][3] = 100;
+
+    allCardsName[2] = ":/images/house.png";
+    allCardCHD[2][1] = 5;
+    allCardCHD[2][2] = 500;
+    allCardCHD[2][3] = 100;
+
     setMinimumSize(200,200);
     setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
     setAcceptDrops(true);
-
-    QLabel *boatIcon = new QLabel(this);
-    QImage image(":/images/boat.png");
-    boatIcon->setGeometry(10,10,100,100);
-    QPainter p(&image);
-    p.setPen(QPen(Qt::red));
-    p.setFont(QFont("Times", 12, QFont::Bold));
-    p.drawText(image.rect(), Qt::AlignCenter, "100");
-    boatIcon->setPixmap(QPixmap::fromImage(image));
-    //boatIcon->move(10, 10);
-    boatIcon->show();
-    boatIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-
-
-
-   /* QLabel *carIcon = new QLabel(this);
-    carIcon->setPixmap(QPixmap(":/images/car.png"));
-    carIcon->move(100, 10);
-    carIcon->show();
-    carIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-    QLabel *houseIcon = new QLabel(this);
-    houseIcon->setPixmap(QPixmap(":/images/house.png"));
-    houseIcon->move(10, 80);
-    houseIcon->show();
-    houseIcon->setAttribute(Qt::WA_DeleteOnClose);*/
+    for(int i = 0;i < 5; i++){
+        int k = 10+100*i;
+        qDebug() << CastRand();
+        bufKto[i] = (CastRand()*rand())%3;
+        qDebug() << bufKto[i] <<":who:" << allCardsName[bufKto[i]] << allCardCHD[bufKto[i]][1] << allCardCHD[bufKto[i]][2] << allCardCHD[bufKto[i]][3];
+        bufLabel[i] = new label(allCardsName[bufKto[i]],allCardCHD[bufKto[i]][1],allCardCHD[bufKto[i]][2],allCardCHD[bufKto[i]][3],k,this,250);
+    }
 }
-//! [0]
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-   event->ignore();
+    QPoint Bag2 = event->pos();
+    qDebug() << "Move" << Bag2;
+
+    if(event->source() == this && event->pos().y()>this->height()/2){
+       event->acceptProposedAction();
+    }
+    else{
+        event->ignore();
+    }
 }
 
 void DragWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-        if (event->source() == this) {
+
+        QPoint Bag2 = event->pos();
+        qDebug() << "Move" << Bag2;
+        qDebug() << "money" << dragBuf->c;
+        if(event->source() == this && event->pos().y()<this->height()/2 && money-dragBuf->c>=0){
             event->setDropAction(Qt::MoveAction);
-            event->acceptProposedAction();
-        } else {
-            event->acceptProposedAction();
+            event->accept();
         }
+        if(event->source() == this && event->pos().y()>this->height()/2){
+            event->ignore();
+        }
+
 }
 
 void DragWidget::dropEvent(QDropEvent *event)
 {
-    if (event->source() == this) {
+   if(event->source() == this && event->pos().y()<this->height()/2)
+   {
+        money = money - dragBuf->c;
+        qDebug() << money;
         event->setDropAction(Qt::MoveAction);
-        event->acceptProposedAction();
-    } else {
-        event->acceptProposedAction();
+        event->accept();
+        int k = 0;
+        while(kto[k] == false)
+        {
+            k++;
+        }
+        kto[k] = false;
+        bufHandLabel[k] = new label(dragBuf->name,dragBuf->c,dragBuf->h,dragBuf->d,0,this,0);
+
+        if(k==0)
+           bufHandLabel[k]->moveLabel(10,100);
+        if(k==1)
+           bufHandLabel[k]->moveLabel(110,100);
+        if(k==2)
+           bufHandLabel[k]->moveLabel(210,100);
+        if(k==3)
+           bufHandLabel[k]->moveLabel(310,100);
+        if(k==4)
+           bufHandLabel[k]->moveLabel(410,100);
     }
 }
 
 void DragWidget::mousePressEvent(QMouseEvent *event)
 {
-    QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
-    if (!child)
-        return;
+    if(event->button() == Qt::LeftButton){
+        qDebug()<< "this: " << event->pos() << this->height()/2;
+        if(event->pos().x()>=10 && event->pos().x()<=110 && event->pos().y()>=250 && event->pos().y()<=350){
+           dragBuf = bufLabel[0];
+        }
+        if(event->pos().x()>=110 && event->pos().x()<=210 && event->pos().y()>=250 && event->pos().y()<=350){
+           dragBuf = bufLabel[1];
+        }
+        if(event->pos().x()>=210 && event->pos().x()<=310 && event->pos().y()>=250 && event->pos().y()<=350){
+            dragBuf = bufLabel[2];
+        }
+        if(event->pos().x()>=310 && event->pos().x()<=410 && event->pos().y()>=250 && event->pos().y()<=350){
+           dragBuf = bufLabel[3];
+        }
+        if(event->pos().x()>=410 && event->pos().x()<=510 && event->pos().y()>=250 && event->pos().y()<=350){
+           dragBuf = bufLabel[4];
+        }
+        QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
+            if (!child)
+                return;
 
-    QPixmap pixmap = child->pixmap(Qt::ReturnByValue);
+            QPixmap pixmap = child->pixmap(Qt::ReturnByValue);
 
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << pixmap << QPoint(event->pos() - child->pos());
-//! [1]
+            QByteArray itemData;
+            QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+            dataStream << pixmap << QPoint(event->pos() - child->pos());
 
-//! [2]
-    QMimeData *mimeData = new QMimeData;
-    mimeData->setData("application/x-dnditemdata", itemData);
-//! [2]
+            QMimeData *mimeData = new QMimeData;
+            mimeData->setData("application/x-dnditemdata", itemData);
 
-//! [3]
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->setPixmap(pixmap);
-    drag->setHotSpot(event->pos() - child->pos());
-//! [3]
+            QDrag *drag = new QDrag(this);
+            drag->setMimeData(mimeData);
+            drag->setPixmap(pixmap);
+            drag->setHotSpot(event->pos() - child->pos());
 
-    QPixmap tempPixmap = pixmap;
-    QPainter painter;
-    painter.begin(&tempPixmap);
-    painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
-    painter.end();
+            QPixmap tempPixmap = pixmap;
+            QPainter painter;
+            painter.begin(&tempPixmap);
+            painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
+            painter.end();
+            child->setPixmap(tempPixmap);
 
-    child->setPixmap(tempPixmap);
-
-    if (drag->exec(Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-        child->close();
-    } else {
-        child->show();
-        child->setPixmap(pixmap);
+            if (drag->exec(Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
+                child->close();
+            } else {
+                child->show();
+                child->setPixmap(pixmap);
+            }
+     }
+    if(event->button() == Qt::RightButton){
+        if(event->pos().x()>=10 && event->pos().x()<=110 && event->pos().y()>=100 && event->pos().y()<=200){
+          money = money + bufHandLabel[0]->c;
+          kto[0] = true;
+          delete bufHandLabel[0] ;
+        }
+        if(event->pos().x()>=110 && event->pos().x()<=210 && event->pos().y()>=100 && event->pos().y()<=200){
+          money = money + bufHandLabel[1]->c;
+          kto[1] = true;
+          delete bufHandLabel[1];
+        }
+        if(event->pos().x()>=210 && event->pos().x()<=310 && event->pos().y()>=100 && event->pos().y()<=200){
+          money = money + bufHandLabel[2]->c;
+           kto[2] = true;
+          delete bufHandLabel[2];
+        }
+        if(event->pos().x()>=310 && event->pos().x()<=410 && event->pos().y()>=100 && event->pos().y()<=200){
+          money = money + bufHandLabel[3]->c;
+           kto[3] = true;
+          delete bufHandLabel[3];
+        }
+        if(event->pos().x()>=410 && event->pos().x()<=510 && event->pos().y()>=100 && event->pos().y()<=200){
+          money = money + bufHandLabel[4]->c;
+           kto[4] = true;
+          delete bufHandLabel[4];
+        }
     }
 }
