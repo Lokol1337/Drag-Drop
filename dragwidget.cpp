@@ -57,17 +57,17 @@
 #include <random>
 
 
-bool *kto = new bool(5);
-int bufKto[5];
-label *bufLabel[5];
-label *bufHandLabel[5];
+bool *kto = new bool(5);// проверка наличия места для постановки карты
+int bufKto[5];// порядковый номер карты
+label *bufLabel[5];// возможнные карты к покупке
+label *bufHandLabel[5];// стол игрока
 label *dragBuf;
 int money = 10;
-QString allCardsName[3];
-int allCardCHD[3][4];
+QString allCardsName[3];// ссылки на карты
+int allCardCHD[3][4];// харакртеристики карт
 
 
-int DragWidget::CastRand(){
+int DragWidget::CastRand(){ // получение мсек в реал времени
     QTime t  = QTime::currentTime();
         return t.msec();
 }
@@ -89,6 +89,7 @@ DragWidget::DragWidget(QWidget *parent)
     allCardCHD[2][1] = 5;
     allCardCHD[2][2] = 500;
     allCardCHD[2][3] = 100;
+    //получение данных о картах
 
     setMinimumSize(200,200);
     setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
@@ -98,16 +99,15 @@ DragWidget::DragWidget(QWidget *parent)
         qDebug() << CastRand();
         bufKto[i] = (CastRand()*rand())%3;
         qDebug() << bufKto[i] <<":who:" << allCardsName[bufKto[i]] << allCardCHD[bufKto[i]][1] << allCardCHD[bufKto[i]][2] << allCardCHD[bufKto[i]][3];
-        bufLabel[i] = new label(allCardsName[bufKto[i]],allCardCHD[bufKto[i]][1],allCardCHD[bufKto[i]][2],allCardCHD[bufKto[i]][3],k,this,250);
+        bufLabel[i] = new label(allCardsName[bufKto[i]],allCardCHD[bufKto[i]][1],allCardCHD[bufKto[i]][2],allCardCHD[bufKto[i]][3],k,this,300);
     }
+    qDebug() << "12345";
+    // создание поля и рандом карт в магазин
 }
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    QPoint Bag2 = event->pos();
-    qDebug() << "Move" << Bag2;
-
-    if(event->source() == this && event->pos().y()>this->height()/2){
+    if(event->source() == this && event->pos().y()>this->height()/2){ // разрешение на взятие карты в допустимом поле
        event->acceptProposedAction();
     }
     else{
@@ -117,18 +117,13 @@ void DragWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void DragWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-
-        QPoint Bag2 = event->pos();
-        qDebug() << "Move" << Bag2;
-        qDebug() << "money" << dragBuf->c;
-        if(event->source() == this && event->pos().y()<this->height()/2 && money-dragBuf->c>=0){
+        if(event->source() == this && event->pos().y()<this->height()/2 && money-dragBuf->c>=0){ // проверка на наличия денег для покупки (+возможность взять карту)
             event->setDropAction(Qt::MoveAction);
             event->accept();
         }
         if(event->source() == this && event->pos().y()>this->height()/2){
             event->ignore();
         }
-
 }
 
 void DragWidget::dropEvent(QDropEvent *event)
@@ -140,7 +135,7 @@ void DragWidget::dropEvent(QDropEvent *event)
         event->setDropAction(Qt::MoveAction);
         event->accept();
         int k = 0;
-        while(kto[k] == false)
+        while(kto[k] == false) // проверка занятых позиций на столе
         {
             k++;
         }
@@ -157,12 +152,14 @@ void DragWidget::dropEvent(QDropEvent *event)
            bufHandLabel[k]->moveLabel(310,100);
         if(k==4)
            bufHandLabel[k]->moveLabel(410,100);
+        //постановка карты на стол после покупки
     }
 }
 
 void DragWidget::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton){
+    if(event->button() == Qt::LeftButton)
+    {
         qDebug()<< "this: " << event->pos() << this->height()/2;
         if(event->pos().x()>=10 && event->pos().x()<=110 && event->pos().y()>=250 && event->pos().y()<=350){
            dragBuf = bufLabel[0];
@@ -179,37 +176,41 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
         if(event->pos().x()>=410 && event->pos().x()<=510 && event->pos().y()>=250 && event->pos().y()<=350){
            dragBuf = bufLabel[4];
         }
+        // получение данных о выбранной карте
         QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
             if (!child)
                 return;
 
-            QPixmap pixmap = child->pixmap(Qt::ReturnByValue);
+        QPixmap pixmap = child->pixmap(Qt::ReturnByValue);
 
-            QByteArray itemData;
-            QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-            dataStream << pixmap << QPoint(event->pos() - child->pos());
+        QByteArray itemData;
+        QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+        dataStream << pixmap << QPoint(event->pos() - child->pos());
 
-            QMimeData *mimeData = new QMimeData;
-            mimeData->setData("application/x-dnditemdata", itemData);
+        QMimeData *mimeData = new QMimeData;
+        mimeData->setData("application/x-dnditemdata", itemData);
 
-            QDrag *drag = new QDrag(this);
-            drag->setMimeData(mimeData);
-            drag->setPixmap(pixmap);
-            drag->setHotSpot(event->pos() - child->pos());
+        QDrag *drag = new QDrag(this);
+        drag->setMimeData(mimeData);
+        drag->setPixmap(pixmap);
+        drag->setHotSpot(event->pos() - child->pos());
 
-            QPixmap tempPixmap = pixmap;
-            QPainter painter;
-            painter.begin(&tempPixmap);
-            painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
-            painter.end();
-            child->setPixmap(tempPixmap);
+        QPixmap tempPixmap = pixmap;
+        QPainter painter;
+        painter.begin(&tempPixmap);
+        painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
+        painter.end();
+        child->setPixmap(tempPixmap);
 
-            if (drag->exec(Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-                child->close();
-            } else {
-                child->show();
-                child->setPixmap(pixmap);
-            }
+
+        if (drag->exec(Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
+            child->close();
+        }
+        else {
+            child->show();
+            child->setPixmap(pixmap);
+        }
+        // создание анимации переноса карты по полю
      }
     if(event->button() == Qt::RightButton){
         if(event->pos().x()>=10 && event->pos().x()<=110 && event->pos().y()>=100 && event->pos().y()<=200){
@@ -238,4 +239,5 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
           delete bufHandLabel[4];
         }
     }
+    //удаление купленной карты по нажатию правой кнопки мыши
 }

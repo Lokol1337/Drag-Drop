@@ -11,6 +11,7 @@ class newClass: public QFrame
 public:
     newClass(QWidget *parent = nullptr);
     void DropBot(QWidget *parent = nullptr);
+    int CastBotRand();
 
 };
 

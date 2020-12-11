@@ -63,7 +63,9 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QWidget mainWidget;
-    mainWidget.setFixedSize(1024,768);
+    mainWidget.setFixedSize(1280,1024);
+    mainWidget.setStyleSheet("background-image: /images/wood.jpg");
+
 
     QVBoxLayout *verticalLayout = new QVBoxLayout(&mainWidget);
 

@@ -77,6 +77,7 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event)override;
+    void drawLine(QPaintEvent *event);
     //void paintEvent(QPaintEvent *event) override;
 };
 //! [0]

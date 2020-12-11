@@ -1,9 +1,5 @@
 #include "label.h"
 
-extern QString bufName;
-extern int bufC;
-extern int bufH;
-extern int bufD;
 
 label::label(QString cardName, int cost, int health, int damage,int x, QWidget *parent,int y)
 {
@@ -13,13 +9,13 @@ label::label(QString cardName, int cost, int health, int damage,int x, QWidget *
     d = damage;
     QString CString = QString::number(cost);
     this->setParent(parent);
-    QImage image(cardName);
+    QImage image(name);
     QPainter p(&image);
     p.setPen(QPen(Qt::red));
     p.setFont(QFont("Times", 12, QFont::Bold));
     p.drawText(image.rect(), Qt::AlignCenter, CString);
     setPixmap(QPixmap::fromImage(image));
-    setGeometry(x,y,100,100);
+    setGeometry(x,y,140,170);
     show();
 }
 label::label(QWidget *parent){
