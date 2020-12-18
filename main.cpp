@@ -64,6 +64,11 @@ int main(int argc, char *argv[])
 
     QWidget mainWidget;
     mainWidget.setFixedSize(1280,1024);
+    QPalette Pal;
+    QImage background2(":/images/wood.jpg");
+    Pal.setBrush(QPalette::Background, background2);
+    mainWidget.setAutoFillBackground(true);
+    mainWidget.setPalette(Pal);
     mainWidget.setStyleSheet("background-image: /images/wood.jpg");
 
 

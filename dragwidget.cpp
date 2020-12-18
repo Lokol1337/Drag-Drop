@@ -55,6 +55,7 @@
 #include "QVector"
 #include <QTime>
 #include <random>
+#include <QPixmap>
 
 
 bool *kto = new bool(5);// проверка наличия места для постановки карты
@@ -63,8 +64,8 @@ label *bufLabel[5];// возможнные карты к покупке
 label *bufHandLabel[5];// стол игрока
 label *dragBuf;
 int money = 10;
-QString allCardsName[3];// ссылки на карты
-int allCardCHD[3][4];// харакртеристики карт
+QString allCardsName[10];// ссылки на карты
+int allCardCHD[10][4];// харакртеристики карт
 
 
 int DragWidget::CastRand(){ // получение мсек в реал времени
@@ -75,29 +76,65 @@ int DragWidget::CastRand(){ // получение мсек в реал врем�
 DragWidget::DragWidget(QWidget *parent)
     : QFrame(parent)
 {
-    allCardsName[0] = ":/images/boat.png";
-    allCardCHD[0][1] = 3;
-    allCardCHD[0][2] = 500;
-    allCardCHD[0][3] = 100;
+    allCardsName[0] = ":/images/card1.png";
+    allCardCHD[0][1] = 1;
+    allCardCHD[0][2] = 1;
+    allCardCHD[0][3] = 1;
 
-    allCardsName[1] = ":/images/car.png";
-    allCardCHD[1][1] = 4;
-    allCardCHD[1][2] = 500;
-    allCardCHD[1][3] = 100;
+    allCardsName[1] = ":/images/card2.png";
+    allCardCHD[1][1] = 2;
+    allCardCHD[1][2] = 2;
+    allCardCHD[1][3] = 2;
 
-    allCardsName[2] = ":/images/house.png";
-    allCardCHD[2][1] = 5;
-    allCardCHD[2][2] = 500;
-    allCardCHD[2][3] = 100;
+    allCardsName[2] = ":/images/card3.png";
+    allCardCHD[2][1] = 3;
+    allCardCHD[2][2] = 3;
+    allCardCHD[2][3] = 3;
+
+    allCardsName[3] = ":/images/card4.png";
+    allCardCHD[3][1] = 4;
+    allCardCHD[3][2] = 4;
+    allCardCHD[3][3] = 4;
+
+    allCardsName[4] = ":/images/card5.png";
+    allCardCHD[4][1] = 5;
+    allCardCHD[4][2] = 5;
+    allCardCHD[4][3] = 5;
+
+    allCardsName[5] = ":/images/card6.png";
+    allCardCHD[5][1] = 6;
+    allCardCHD[5][2] = 6;
+    allCardCHD[5][3] = 6;
+
+    allCardsName[6] = ":/images/card7.png";
+    allCardCHD[6][1] = 7;
+    allCardCHD[6][2] = 7;
+    allCardCHD[6][3] = 7;
+
+    allCardsName[7] = ":/images/card8.png";
+    allCardCHD[7][1] = 8;
+    allCardCHD[7][2] = 8;
+    allCardCHD[7][3] = 8;
+
+    allCardsName[8] = ":/images/card9.png";
+    allCardCHD[8][1] = 9;
+    allCardCHD[8][2] = 9;
+    allCardCHD[8][3] = 9;
+
+    allCardsName[9] = ":/images/card10.png";
+    allCardCHD[9][1] = 10;
+    allCardCHD[9][2] = 10;
+    allCardCHD[9][3] = 10;
+
     //получение данных о картах
 
     setMinimumSize(200,200);
     setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
     setAcceptDrops(true);
     for(int i = 0;i < 5; i++){
-        int k = 10+100*i;
+        int k = 10+150*i;
         qDebug() << CastRand();
-        bufKto[i] = (CastRand()*rand())%3;
+        bufKto[i] = (CastRand()*rand())%10;
         qDebug() << bufKto[i] <<":who:" << allCardsName[bufKto[i]] << allCardCHD[bufKto[i]][1] << allCardCHD[bufKto[i]][2] << allCardCHD[bufKto[i]][3];
         bufLabel[i] = new label(allCardsName[bufKto[i]],allCardCHD[bufKto[i]][1],allCardCHD[bufKto[i]][2],allCardCHD[bufKto[i]][3],k,this,300);
     }
@@ -145,13 +182,13 @@ void DragWidget::dropEvent(QDropEvent *event)
         if(k==0)
            bufHandLabel[k]->moveLabel(10,100);
         if(k==1)
-           bufHandLabel[k]->moveLabel(110,100);
+           bufHandLabel[k]->moveLabel(160,100);
         if(k==2)
-           bufHandLabel[k]->moveLabel(210,100);
-        if(k==3)
            bufHandLabel[k]->moveLabel(310,100);
+        if(k==3)
+           bufHandLabel[k]->moveLabel(460,100);
         if(k==4)
-           bufHandLabel[k]->moveLabel(410,100);
+           bufHandLabel[k]->moveLabel(610,100);
         //постановка карты на стол после покупки
     }
 }
@@ -161,19 +198,19 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         qDebug()<< "this: " << event->pos() << this->height()/2;
-        if(event->pos().x()>=10 && event->pos().x()<=110 && event->pos().y()>=250 && event->pos().y()<=350){
+        if(event->pos().x()>=10 && event->pos().x()<=150 && event->pos().y()>=300 && event->pos().y()<=470){
            dragBuf = bufLabel[0];
         }
-        if(event->pos().x()>=110 && event->pos().x()<=210 && event->pos().y()>=250 && event->pos().y()<=350){
+        if(event->pos().x()>=160 && event->pos().x()<=300 && event->pos().y()>=300 && event->pos().y()<=470){
            dragBuf = bufLabel[1];
         }
-        if(event->pos().x()>=210 && event->pos().x()<=310 && event->pos().y()>=250 && event->pos().y()<=350){
+        if(event->pos().x()>=310 && event->pos().x()<=450 && event->pos().y()>=300 && event->pos().y()<=470){
             dragBuf = bufLabel[2];
         }
-        if(event->pos().x()>=310 && event->pos().x()<=410 && event->pos().y()>=250 && event->pos().y()<=350){
+        if(event->pos().x()>=460 && event->pos().x()<=600 && event->pos().y()>=300 && event->pos().y()<=470){
            dragBuf = bufLabel[3];
         }
-        if(event->pos().x()>=410 && event->pos().x()<=510 && event->pos().y()>=250 && event->pos().y()<=350){
+        if(event->pos().x()>=610 && event->pos().x()<=750 && event->pos().y()>=300 && event->pos().y()<=470){
            dragBuf = bufLabel[4];
         }
         // получение данных о выбранной карте
@@ -213,27 +250,27 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
         // создание анимации переноса карты по полю
      }
     if(event->button() == Qt::RightButton){
-        if(event->pos().x()>=10 && event->pos().x()<=110 && event->pos().y()>=100 && event->pos().y()<=200){
+        if((event->pos().x()>=10 && event->pos().x()<=150 && event->pos().y()>=100 && event->pos().y()<=270)&&bufHandLabel[0]!=nullptr){
           money = money + bufHandLabel[0]->c;
           kto[0] = true;
           delete bufHandLabel[0] ;
         }
-        if(event->pos().x()>=110 && event->pos().x()<=210 && event->pos().y()>=100 && event->pos().y()<=200){
+        if((event->pos().x()>=160 && event->pos().x()<=300 && event->pos().y()>=100 && event->pos().y()<=270)&&bufHandLabel[1]!=nullptr){
           money = money + bufHandLabel[1]->c;
           kto[1] = true;
           delete bufHandLabel[1];
         }
-        if(event->pos().x()>=210 && event->pos().x()<=310 && event->pos().y()>=100 && event->pos().y()<=200){
+        if((event->pos().x()>=310 && event->pos().x()<=450 && event->pos().y()>=100 && event->pos().y()<=270)&&bufHandLabel[2]!=nullptr){
           money = money + bufHandLabel[2]->c;
            kto[2] = true;
           delete bufHandLabel[2];
         }
-        if(event->pos().x()>=310 && event->pos().x()<=410 && event->pos().y()>=100 && event->pos().y()<=200){
+        if((event->pos().x()>=460 && event->pos().x()<=600 && event->pos().y()>=100 && event->pos().y()<=270)&&bufHandLabel[3]!=nullptr){
           money = money + bufHandLabel[3]->c;
            kto[3] = true;
           delete bufHandLabel[3];
         }
-        if(event->pos().x()>=410 && event->pos().x()<=510 && event->pos().y()>=100 && event->pos().y()<=200){
+        if((event->pos().x()>=610 && event->pos().x()<=750 && event->pos().y()>=100 && event->pos().y()<=270)&&bufHandLabel[4]!=nullptr){
           money = money + bufHandLabel[4]->c;
            kto[4] = true;
           delete bufHandLabel[4];
