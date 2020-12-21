@@ -52,20 +52,20 @@
 
 #include "dragwidget.h"
 #include "label.h"
+#include "image.h"
 #include "QVector"
 #include <QTime>
 #include <random>
 #include <QPixmap>
+#include "gold.h"
 
 
 bool *kto = new bool(5);// проверка наличия места для постановки карты
 int bufKto[5];// порядковый номер карты
-label *bufLabel[5];// возможнные карты к покупке
-label *bufHandLabel[5];// стол игрока
 label *dragBuf;
-int money = 10;
 QString allCardsName[10];// ссылки на карты
 int allCardCHD[10][4];// харакртеристики карт
+
 
 
 int DragWidget::CastRand(){ // получение мсек в реал времени
@@ -76,6 +76,7 @@ int DragWidget::CastRand(){ // получение мсек в реал врем�
 DragWidget::DragWidget(QWidget *parent)
     : QFrame(parent)
 {
+    this->setParent(parent);
     allCardsName[0] = ":/images/card1.png";
     allCardCHD[0][1] = 1;
     allCardCHD[0][2] = 1;
@@ -138,8 +139,8 @@ DragWidget::DragWidget(QWidget *parent)
         qDebug() << bufKto[i] <<":who:" << allCardsName[bufKto[i]] << allCardCHD[bufKto[i]][1] << allCardCHD[bufKto[i]][2] << allCardCHD[bufKto[i]][3];
         bufLabel[i] = new label(allCardsName[bufKto[i]],allCardCHD[bufKto[i]][1],allCardCHD[bufKto[i]][2],allCardCHD[bufKto[i]][3],k,this,300);
     }
-    qDebug() << "12345";
     // создание поля и рандом карт в магазин
+    gold *GOLD = new gold(this,money);
 }
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)
@@ -277,4 +278,6 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
         }
     }
     //удаление купленной карты по нажатию правой кнопки мыши
+
+    gold *GOLD = new gold(this,money);
 }

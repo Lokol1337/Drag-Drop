@@ -67,6 +67,9 @@ class DragWidget : public QFrame
 public:
     explicit DragWidget(QWidget *parent = nullptr);
     int CastRand();
+    label *bufLabel[5];// возможнные карты к покупке
+    label *bufHandLabel[5];// стол игрока
+    int money = 15;
 private:
     qreal x1 = 0;
     qreal y1 = 400;

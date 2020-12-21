@@ -54,6 +54,9 @@
 
 #include "newclass.h"
 #include "dragwidget.h"
+#include "game.h"
+#include <QTime>
+#include <QDebug>
 
 
 int main(int argc, char *argv[])
@@ -72,16 +75,27 @@ int main(int argc, char *argv[])
     mainWidget.setStyleSheet("background-image: /images/wood.jpg");
 
 
-    QVBoxLayout *verticalLayout = new QVBoxLayout(&mainWidget);
+    //QVBoxLayout *verticalLayout = new QVBoxLayout(&mainWidget);
 
 
-    verticalLayout->addWidget(new newClass);
-    verticalLayout->addWidget(new DragWidget);
+//    verticalLayout->addWidget(new newClass);
+//    verticalLayout->addWidget(new DragWidget);
 
+    newClass* Class = new newClass(&mainWidget);
+    Class->setGeometry(0,0,1280,512);
 
+    DragWidget* Class2 = new DragWidget(&mainWidget);
+    Class2->setGeometry(0,512,1280,512);
+
+    QTime t  = QTime::currentTime();
+    //int time = t.minute()+1;
+    qDebug() << t.minute();
+        game a;
+        a.play(Class2,Class);
 
     mainWidget.setWindowTitle(QObject::tr("Draggable Icons"));
     mainWidget.show();
+
 
     return app.exec();
 }

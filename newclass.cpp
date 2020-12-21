@@ -6,10 +6,7 @@
 #include <random>
 
 int bufKto2[5];
-bool *kto2 = new bool(5);// проверка наличия карты в массиве
-label *bufLabel2[5];// возможнные карты к покупке ботом
-label *bufHandLabel2[5];// стол бота
-int money2 = 10;
+bool kto2[5];// проверка наличия карты в массиве
 QString allCardsName2[10]; // ссылки на карты
 int allCardCHD2[10][4]; // харакртеристики карт
 
@@ -20,6 +17,7 @@ int newClass::CastBotRand(){
 
 newClass::newClass(QWidget *parent)
 {
+    this->setParent(parent);
     for(int i = 0;i < 5;i++){
         qDebug() << "bug" << kto2[i];
     }
@@ -88,12 +86,13 @@ newClass::newClass(QWidget *parent)
     //создание карт в магазине бота
     DropBot(this);
     qDebug() << "12345";
-
 }
 
 void newClass::DropBot(QWidget *parent){
+
     int k2 = 0;
 label *bufBufLabel2[5];
+
 for(int i = 0;i < 5;i++){
     bufBufLabel2[i] = bufLabel2[i];
 }
@@ -117,51 +116,43 @@ for(int i = 0;i < 5;i++){
 //            }
 //            counter++;
 //        }
-        if(kto2[0] == true){
-            if(money2 >=  bufBufLabel2[0]->c)
-                            {
+        if(kto2[0] == false){
+            if(money2 >=  bufBufLabel2[0]->c){
                 qDebug() << money2 << bufBufLabel2[counter]->c;
                                can = false;
-                           }
+             }
         }
-        if(kto2[1] == true){
-            if(money2 >=  bufBufLabel2[1]->c)
-                            {
+        if(kto2[1] == false){
+            if(money2 >=  bufBufLabel2[1]->c){
                 qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
-                           }
+            }
         }
-        if(kto2[2] == true){
-            if(money2 >=  bufBufLabel2[2]->c)
-                            {
+        if(kto2[2] == false){
+            if(money2 >=  bufBufLabel2[2]->c){
                 qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
-                           }
+             }
         }
-        if(kto2[3] == true){
-            if(money2 >= bufBufLabel2[3]->c)
-                            {
+        if(kto2[3] == false){
+            if(money2 >= bufBufLabel2[3]->c){
                 qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
-                           }
+             }
         }
-        if(kto2[4] == true){
-            if(money2 >=  bufBufLabel2[4]->c)
-                            {
+        if(kto2[4] == false){
+            if(money2 >=  bufBufLabel2[4]->c){
                 qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
-                           }
+              }
         }
-
-        qDebug() << "can:" << can;
+        qDebug() << can;
         if(can == true){
-            qDebug() << "puk";
             return;
-
         }
         //выход из стадии покупки, если ни одна из существующих карт не удолетворяет кол-ву денег бота
         int r = (CastBotRand()*rand())%5;
-        while(kto2[r] == false)
+        while(kto2[r] == true)
             r = (CastBotRand()*rand())%5;
 
         if(bufLabel2[r]->c<=money2)
@@ -181,7 +172,7 @@ for(int i = 0;i < 5;i++){
             k2++;
             money2 = money2-bufLabel2[r]->c;
             delete bufLabel2[r];
-            kto2[r] = false;
+            kto2[r] = true;
         }
         //рандомная покупка карты и её постановка на стол
     }

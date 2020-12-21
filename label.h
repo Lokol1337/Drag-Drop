@@ -15,6 +15,7 @@ public:
     int c;
     int h;
     int d;
+
     label(QString cardName, int cost, int health, int damage,int x,QWidget *parent = nullptr, int y = 400);
     label(QWidget *parent = nullptr);
    // label(QWidget *parent = nullptr,QMouseEvent *event = nullptr);
