@@ -52,7 +52,6 @@
 
 #include "dragwidget.h"
 #include "label.h"
-#include "image.h"
 #include "QVector"
 #include <QTime>
 #include <random>

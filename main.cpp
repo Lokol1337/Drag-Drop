@@ -58,6 +58,8 @@
 #include <QTime>
 #include <QDebug>
 #include <QString>
+#include <QMessageBox>
+
 
 
 int main(int argc, char *argv[])
@@ -75,10 +77,12 @@ int main(int argc, char *argv[])
     mainWidget.setPalette(Pal);
     mainWidget.setStyleSheet("background-image: /images/wood.jpg");
 
+
     game a(&mainWidget);
 
     mainWidget.setWindowTitle(QObject::tr("Draggable Icons"));
     mainWidget.show();
+
 
 
     return app.exec();

@@ -14,14 +14,17 @@ game::game(QWidget *parent){
     this->startTimer(100);
     _parent = parent;
 
-    time = 50;
+    time = 20;
 }
 
 void game::timerEvent(QTimerEvent *event){
     play();
     if(timer!=-1)
         timer-=1;
-    time-=1;
+
+    if(timer == -1)
+        time+=1;
+    //qDebug() << time;
 }
 
 void game::play()
@@ -34,29 +37,32 @@ void game::play()
     {
         seconds *_S = new seconds(_parent,0,"timeout");
         timer = -1;
+
+
+        for(int i = 0;i < 5;i++)
+        {
+            kto2[i] = Player->kto[i];
+            ktoBot2[i] = Bot->ktoBot[i];
+            if(kto2[i] == false)
+                counter1++;
+            if(ktoBot2[i] == false)
+                counter2++;
+        }
     }
 
-    if(timer == -1 && time%5==0)
+
+
+    if(timer == -1)
     {
 
-            bool kto2[5];
-            bool ktoBot2[5];
-            int counter1 = 0;
-            int counter2 = 0;
-            for(int i = 0;i < 5;i++)
-            {
-                kto2[i] = Player->kto[i];
-                ktoBot2[i] = Bot->ktoBot[i];
-                if(kto2[i] == false)
-                    counter1++;
-                if(ktoBot2[i] == false)
-                    counter2++;
-            }
-            int bufCounter1 = 0;
-            int bufCounter2 = 0;
+            qDebug() <<"counter1:" <<counter1;
 
-            while(counter1 > 0 && counter2 > 0)
+            if(counter1 > 0 && counter2 > 0 && time%20==0)
             {
+                qDebug() << time;
+                for(int i = 0;i < 5;i++){
+                    qDebug() << kto2[i] << " ";
+                }
                 int i = 0;
                 while(kto2[i] == true)
                     i++;
@@ -68,9 +74,30 @@ void game::play()
                 int k = 10 + 150*i;
                 int kBot = 10 + 150*j;
 
+                if(i==0)
+                   Player->bufHandLabel[i]->moveLabel(10,80);
+                if(i==1)
+                  Player->bufHandLabel[i]->moveLabel(160,80);
+                if(i==2)
+                   Player->bufHandLabel[i]->moveLabel(310,80);
+                if(i==3)
+                   Player->bufHandLabel[i]->moveLabel(460,80);
+                if(i==4)
+                   Player->bufHandLabel[i]->moveLabel(610,80);
 
+                if(j==0)
+                   Bot->bufHandLabel2[j]->moveLabel(10,260);
+                if(j==1)
+                  Bot->bufHandLabel2[j]->moveLabel(160,260);
+                if(j==2)
+                  Bot->bufHandLabel2[j]->moveLabel(310,260);
+                if(j==3)
+                   Bot->bufHandLabel2[j]->moveLabel(460,260);
+                if(j==4)
+                   Bot->bufHandLabel2[j]->moveLabel(610,260);
 
-
+                if(time%30 == 0)
+                {
                     Player->bufHandLabel[i]->h = Player->bufHandLabel[i]->h - Bot->bufHandLabel2[j]->d;
                     Bot->bufHandLabel2[j]->h = Bot->bufHandLabel2[j]->h -  Player->bufHandLabel[i]->d;
 
@@ -101,9 +128,11 @@ void game::play()
                     }
                     bufCounter1++;
                     bufCounter2++;
+                    qDebug() << "bufCounter1: "<< bufCounter1;
                     if(bufCounter1 == counter1)
                     {
-                        counter1 = 0;
+                        qDebug() << "AAAAAAAAaa";
+                         counter1 = 0;
                         for(int a = 0; a < 5;a++)
                         {
                             if(Player->kto[a] == false)
@@ -124,9 +153,41 @@ void game::play()
                         }
                         bufCounter2 = 0;
                     }
+                }
+            }
 
+
+            if(counter1 == 0 && counter2!=0)
+            {
+                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Поражение(((", "Пока!!!",QMessageBox::Ok);
+                if (reply == QMessageBox::Ok)
+                                            {
+                                               _parent->close();
+                                            }
 
             }
-    }
 
+            if(counter2 == 0 && counter1!=0)
+            {
+                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Победа)))", "Ну ты крутой!!!", QMessageBox::Ok);
+                if (reply == QMessageBox::Ok)
+                                            {
+                                                _parent->close();
+                                            }
+            }
+
+
+            if(counter1 == 0 && counter2==0)
+            {
+                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Ничья!!!", "Сходи пости, а потом попробуй еще раз", QMessageBox::Ok);
+                if (reply == QMessageBox::Ok)
+                                            {
+                                               _parent->close();
+                                            }
+
+            }
+          //
+
+
+    }
 }
