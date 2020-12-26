@@ -60,7 +60,7 @@
 #include "gold.h"
 
 
-bool *kto = new bool(5);// проверка наличия места для постановки карты
+//bool *kto = new bool(5);// проверка наличия места для постановки карты
 int bufKto[5];// порядковый номер карты
 label *dragBuf;
 QString allCardsName[10];// ссылки на карты
@@ -134,13 +134,13 @@ DragWidget::DragWidget(QWidget *parent)
     setAcceptDrops(true);
     for(int i = 0;i < 5; i++){
         int k = 10+150*i;
-        qDebug() << CastRand();
+        //qDebug() << CastRand();
         bufKto[i] = (CastRand()*rand())%10;
-        qDebug() << bufKto[i] <<":who:" << allCardsName[bufKto[i]] << allCardCHD[bufKto[i]][1] << allCardCHD[bufKto[i]][2] << allCardCHD[bufKto[i]][3];
+        //qDebug() << bufKto[i] <<":who:" << allCardsName[bufKto[i]] << allCardCHD[bufKto[i]][1] << allCardCHD[bufKto[i]][2] << allCardCHD[bufKto[i]][3];
         bufLabel[i] = new label(allCardsName[bufKto[i]],allCardCHD[bufKto[i]][1],allCardCHD[bufKto[i]][2],allCardCHD[bufKto[i]][3],k,this,300);
     }
     // создание поля и рандом карт в магазин
-    gold *GOLD = new gold(this,money);
+
 }
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)
@@ -169,7 +169,7 @@ void DragWidget::dropEvent(QDropEvent *event)
    if(event->source() == this && event->pos().y()<this->height()/2)
    {
         money = money - dragBuf->c;
-        qDebug() << money;
+        //qDebug() << money;
         event->setDropAction(Qt::MoveAction);
         event->accept();
         int k = 0;
@@ -178,6 +178,7 @@ void DragWidget::dropEvent(QDropEvent *event)
             k++;
         }
         kto[k] = false;
+
         bufHandLabel[k] = new label(dragBuf->name,dragBuf->c,dragBuf->h,dragBuf->d,0,this,0);
 
         if(k==0)
@@ -198,7 +199,7 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        qDebug()<< "this: " << event->pos() << this->height()/2;
+        //qDebug()<< "this: " << event->pos() << this->height()/2;
         if(event->pos().x()>=10 && event->pos().x()<=150 && event->pos().y()>=300 && event->pos().y()<=470){
            dragBuf = bufLabel[0];
         }
@@ -279,5 +280,5 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
     }
     //удаление купленной карты по нажатию правой кнопки мыши
 
-    gold *GOLD = new gold(this,money);
+
 }

@@ -15,6 +15,8 @@ public:
     label *bufLabel2[5];// возможнные карты к покупке ботом
     label *bufHandLabel2[5];// стол бота
     int money2 = 15;
+
+    bool ktoBot[5];
 };
 
 #endif // WINDOW_H

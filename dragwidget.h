@@ -70,6 +70,7 @@ public:
     label *bufLabel[5];// возможнные карты к покупке
     label *bufHandLabel[5];// стол игрока
     int money = 15;
+    bool *kto = new bool[5];
 private:
     qreal x1 = 0;
     qreal y1 = 400;

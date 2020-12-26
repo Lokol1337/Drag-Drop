@@ -6,7 +6,8 @@
 #include <random>
 
 int bufKto2[5];
-bool kto2[5];// проверка наличия карты в массиве
+ bool kto2[5];// проверка наличия карты в массиве
+
 QString allCardsName2[10]; // ссылки на карты
 int allCardCHD2[10][4]; // харакртеристики карт
 
@@ -18,9 +19,6 @@ int newClass::CastBotRand(){
 newClass::newClass(QWidget *parent)
 {
     this->setParent(parent);
-    for(int i = 0;i < 5;i++){
-        qDebug() << "bug" << kto2[i];
-    }
 
     allCardsName2[0] = ":/images/card1.png";
     allCardCHD2[0][1] = 1;
@@ -80,12 +78,11 @@ newClass::newClass(QWidget *parent)
     for(int i = 0;i < 5; i++){
         int k = 10+150*i;
         bufKto2[i] = (CastBotRand()*rand())%10;
-        qDebug() << bufKto2[i] <<":who:" << allCardsName2[bufKto2[i]] << allCardCHD2[bufKto2[i]][1] << allCardCHD2[bufKto2[i]][2] << allCardCHD2[bufKto2[i]][3];
         bufLabel2[i] = new label(allCardsName2[bufKto2[i]],allCardCHD2[bufKto2[i]][1],allCardCHD2[bufKto2[i]][2],allCardCHD2[bufKto2[i]][3],k,this,100);
     }
     //создание карт в магазине бота
     DropBot(this);
-    qDebug() << "12345";
+
 }
 
 void newClass::DropBot(QWidget *parent){
@@ -102,51 +99,31 @@ for(int i = 0;i < 5;i++){
     {
         int counter = 0;
         bool can = true;
-        qDebug() << counter << can;
-//        while(counter < 5)
-//        {
-//            qDebug() << kto2[counter];
-//            if(kto2[counter] == true)
-//            {
-//                qDebug() << money2 << bufLabel2[counter]->c;
-//                if(money2 >= bufLabel2[counter]->c)
-//                {
-//                    can = false;
-//                }
-//            }
-//            counter++;
-//        }
         if(kto2[0] == false){
             if(money2 >=  bufBufLabel2[0]->c){
-                qDebug() << money2 << bufBufLabel2[counter]->c;
                                can = false;
              }
         }
         if(kto2[1] == false){
             if(money2 >=  bufBufLabel2[1]->c){
-                qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
             }
         }
         if(kto2[2] == false){
             if(money2 >=  bufBufLabel2[2]->c){
-                qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
              }
         }
         if(kto2[3] == false){
             if(money2 >= bufBufLabel2[3]->c){
-                qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
              }
         }
         if(kto2[4] == false){
             if(money2 >=  bufBufLabel2[4]->c){
-                qDebug() << money2 <<  bufBufLabel2[counter]->c;
                                can = false;
               }
         }
-        qDebug() << can;
         if(can == true){
             return;
         }
@@ -160,15 +137,30 @@ for(int i = 0;i < 5;i++){
             bufHandLabel2[k2] = new label(bufLabel2[r]->name,bufLabel2[r]->c,bufLabel2[r]->h,bufLabel2[r]->d,0,parent,0);
 
             if(k2==0)
+            {
                bufHandLabel2[k2]->moveLabel(10,250);
+              ktoBot[k2] = false;
+            }
             if(k2==1)
+            {
                bufHandLabel2[k2]->moveLabel(160,250);
+              ktoBot[k2] = false;
+            }
             if(k2==2)
+            {
                bufHandLabel2[k2]->moveLabel(310,250);
+               ktoBot[k2] = false;
+            }
             if(k2==3)
+            {
                bufHandLabel2[k2]->moveLabel(460,250);
+              ktoBot[k2] = false;
+            }
             if(k2==4)
+            {
                bufHandLabel2[k2]->moveLabel(610,250);
+               ktoBot[k2] = false;
+            }
             k2++;
             money2 = money2-bufLabel2[r]->c;
             delete bufLabel2[r];

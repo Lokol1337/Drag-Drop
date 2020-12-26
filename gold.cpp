@@ -13,6 +13,6 @@ gold::gold(QWidget *parent,int AllMoney)
     else
      p.drawText(17,27,MString);
     setPixmap(QPixmap::fromImage(image));
-    setGeometry(1100,100,45,45);
+    setGeometry(1100,600,45,45);
     show();
 }

@@ -57,6 +57,7 @@
 #include "game.h"
 #include <QTime>
 #include <QDebug>
+#include <QString>
 
 
 int main(int argc, char *argv[])
@@ -74,24 +75,7 @@ int main(int argc, char *argv[])
     mainWidget.setPalette(Pal);
     mainWidget.setStyleSheet("background-image: /images/wood.jpg");
 
-
-    //QVBoxLayout *verticalLayout = new QVBoxLayout(&mainWidget);
-
-
-//    verticalLayout->addWidget(new newClass);
-//    verticalLayout->addWidget(new DragWidget);
-
-    newClass* Class = new newClass(&mainWidget);
-    Class->setGeometry(0,0,1280,512);
-
-    DragWidget* Class2 = new DragWidget(&mainWidget);
-    Class2->setGeometry(0,512,1280,512);
-
-    QTime t  = QTime::currentTime();
-    //int time = t.minute()+1;
-    qDebug() << t.minute();
-        game a;
-        a.play(Class2,Class);
+    game a(&mainWidget);
 
     mainWidget.setWindowTitle(QObject::tr("Draggable Icons"));
     mainWidget.show();

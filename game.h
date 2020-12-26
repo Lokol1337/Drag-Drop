@@ -7,24 +7,33 @@
 #include <QDebug>
 #include <label.h>
 #include <QObject>
-
+#include "newclass.h"
+#include "dragwidget.h"
+#include <QTime>
+#include <QDebug>
+#include <QTimerEvent>
+#include <QPainter>
+#include "seconds.h"
+#include "gold.h"
 
 class game :public QObject
 {
     Q_OBJECT
-public slots:
-   //void play2();
+
+//public slots:
+//    void battle();
+
+protected:
+    void timerEvent(QTimerEvent *event) override;
 
 public:
-   label *bufMAG[5];
-   label *bufGame[5];
-   label *bufMAGBot[5];
-   label *bufGameBot[5];
-   int money,moneyBot;
-   int k = 0;
-    game();
-    void play(DragWidget *hand = nullptr,newClass *botHand = nullptr);
-
+    game(QWidget *parent = nullptr);
+    DragWidget* Player;
+    newClass* Bot;
+    void play();
+    int turn = 0;
+    int timer,time;
+    QWidget* _parent;
 };
 
 #endif // GAME_H
