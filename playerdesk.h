@@ -48,51 +48,42 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QHBoxLayout>
+#ifndef PlayerDesk_H
+#define PlayerDesk_H
+
+#include <QFrame>
 #include <QPainter>
+#include "label.h"
+#include <QPushButton>
 
-#include "botdesk.h"
-#include "playerdesk.h"
-#include "game.h"
-#include <QTime>
-#include <QDebug>
-#include <QString>
-#include <QMessageBox>
+QT_BEGIN_NAMESPACE
+class QDragEnterEvent;
+class QDropEvent;
+QT_END_NAMESPACE
 
-
-
-int main(int argc, char *argv[])
+//! [0]
+class PlayerDesk : public QFrame
 {
+public:
+    explicit PlayerDesk(QWidget *parent = nullptr);
+    int CastRand();
+    label *bufLabel[5];// возможнные карты к покупке
+    label *bufHandLabel[5];// стол игрока
+    int money = 15;
+    bool *kto = new bool[5];
+private:
+    qreal x1 = 0;
+    qreal y1 = 400;
+    qreal x2 = 101;
+    qreal y2 = 400;
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void mousePressEvent(QMouseEvent *event)override;
+    void drawLine(QPaintEvent *event);
+    //void paintEvent(QPaintEvent *event) override;
+};
+//! [0]
 
-
-
-    Q_INIT_RESOURCE(draggableicons);
-
-    QApplication app(argc, argv);
-    QWidget mainWidget;
-    mainWidget.setFixedSize(1280,1024);
-    QPalette Pal;
-    QImage background2(":/images/wood.jpg");
-    Pal.setBrush(QPalette::Background, background2);
-    mainWidget.setAutoFillBackground(true);
-    mainWidget.setPalette(Pal);
-
-    mainWidget.setStyleSheet("background-image: /images/wood.jpg");
-    game a(&mainWidget);
-
-    mainWidget.setWindowTitle(QObject::tr("Draggable Icons"));
-    mainWidget.show();
-    QMessageBox::StandardButton menu = QMessageBox::question(&mainWidget,"Game","Добро пожаловать!!! Хотите ли вы начать игру???" , QMessageBox::Yes | QMessageBox::No);
-        if(menu == QMessageBox::Yes)
-        {
-           a.start = true;
-        }
-
-        if(menu == QMessageBox::No){
-            return 0;
-        }
-
-    return app.exec();
-
-}
+#endif // PlayerDesk_H

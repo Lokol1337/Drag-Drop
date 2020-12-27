@@ -3,26 +3,28 @@
 
 
 game::game(QWidget *parent){
-
-    Bot = new newClass(parent);
+    Bot = new BotDesk(parent);
     Bot->setGeometry(0,0,1280,512);
 
-    Player =new DragWidget(parent);
+    Player =new PlayerDesk(parent);
     Player->setGeometry(0,512,1280,512);
 
-    timer = 100;
+    heroes *pixHeroes = new heroes(parent);
+    bots *pixBot = new bots(parent);
+    timer = 200;
     this->startTimer(100);
     _parent = parent;
 
     time = 20;
+
 }
 
 void game::timerEvent(QTimerEvent *event){
     play();
-    if(timer!=-1)
+    if(timer!=-1 && start == true)
         timer-=1;
 
-    if(timer == -1)
+    if(timer == -1 && start == true)
         time+=1;
     //qDebug() << time;
 }
@@ -31,11 +33,13 @@ void game::play()
 {
     gold *GOLD = new gold(_parent,Player->money);
     if(timer!=-1)
-        seconds *_S = new seconds(_parent,(timer - timer%10)/10);
+    {
+        seconds *_S = new seconds(_parent,(timer - timer%10)/10,nullptr);
+    }
 
     if(timer==0)
     {
-        seconds *_S = new seconds(_parent,0,"timeout");
+        seconds *_S = new seconds(_parent,0,"Бой");
         timer = -1;
 
 
@@ -86,15 +90,15 @@ void game::play()
                    Player->bufHandLabel[i]->moveLabel(610,80);
 
                 if(j==0)
-                   Bot->bufHandLabel2[j]->moveLabel(10,260);
+                   Bot->bufHandLabel2[j]->moveLabel(10,270);
                 if(j==1)
-                  Bot->bufHandLabel2[j]->moveLabel(160,260);
+                  Bot->bufHandLabel2[j]->moveLabel(160,270);
                 if(j==2)
-                  Bot->bufHandLabel2[j]->moveLabel(310,260);
+                  Bot->bufHandLabel2[j]->moveLabel(310,270);
                 if(j==3)
-                   Bot->bufHandLabel2[j]->moveLabel(460,260);
+                   Bot->bufHandLabel2[j]->moveLabel(460,270);
                 if(j==4)
-                   Bot->bufHandLabel2[j]->moveLabel(610,260);
+                   Bot->bufHandLabel2[j]->moveLabel(610,270);
 
                 if(time%30 == 0)
                 {
@@ -159,7 +163,7 @@ void game::play()
 
             if(counter1 == 0 && counter2!=0)
             {
-                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Поражение(((", "Пока!!!",QMessageBox::Ok);
+                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Поражение(((", "В этот раз не повезло.",QMessageBox::Ok);
                 if (reply == QMessageBox::Ok)
                                             {
                                                _parent->close();
@@ -169,7 +173,7 @@ void game::play()
 
             if(counter2 == 0 && counter1!=0)
             {
-                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Победа)))", "Ну ты крутой!!!", QMessageBox::Ok);
+                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Победа)))", "Поздравляю с выигрышем.", QMessageBox::Ok);
                 if (reply == QMessageBox::Ok)
                                             {
                                                 _parent->close();
@@ -179,7 +183,7 @@ void game::play()
 
             if(counter1 == 0 && counter2==0)
             {
-                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Ничья!!!", "Сходи пости, а потом попробуй еще раз", QMessageBox::Ok);
+                QMessageBox::StandardButton reply = QMessageBox::warning(_parent, "Ничья!!!", "Победила дружба компьютера и человека!!!", QMessageBox::Ok);
                 if (reply == QMessageBox::Ok)
                                             {
                                                _parent->close();

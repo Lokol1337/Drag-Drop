@@ -1,14 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 #include <QFrame>
-#include "dragwidget.h"
-#include "newclass.h"
+#include "playerdesk.h"
+#include "botdesk.h"
 #include <QTimer>
 #include <QDebug>
 #include <label.h>
 #include <QObject>
-#include "newclass.h"
-#include "dragwidget.h"
 #include <QTime>
 #include <QDebug>
 #include <QTimerEvent>
@@ -16,6 +14,8 @@
 #include "seconds.h"
 #include "gold.h"
 #include <QMessageBox>
+#include "heroes.h"
+#include "bots.h"
 
 class game :public QObject
 {
@@ -29,9 +29,10 @@ protected:
 
 public:
     game(QWidget *parent = nullptr);
-    DragWidget* Player;
-    newClass* Bot;
+    PlayerDesk* Player;
+    BotDesk* Bot;
     void play();
+    bool start = false;
     int turn = 0;
     int timer,time;
     QWidget* _parent;
