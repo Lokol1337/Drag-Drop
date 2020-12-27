@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/boat.png</file>
+        <file>images/car.png</file>
+        <file>images/house.png</file>
+        <file>images/1.png</file>
+        <file>images/card1.png</file>
+        <file>images/card2.png</file>
+        <file>images/card3.png</file>
+        <file>images/card4.png</file>
+        <file>images/card5.png</file>
+        <file>images/card6.png</file>
+        <file>images/card7.png</file>
+        <file>images/card8.png</file>
+        <file>images/card9.png</file>
+        <file>images/card10.png</file>
+        <file>images/wood.jpg</file>
+        <file>images/money.png</file>
+        <file>images/nardi2.png</file>
+        <file>images/timer.jpg</file>
+        <file>images/clock.png</file>
+        <file>images/bot.png</file>
+        <file>images/player.png</file>
+    </qresource>
+</RCC>
