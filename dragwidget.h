@@ -67,6 +67,10 @@ class DragWidget : public QFrame
 public:
     explicit DragWidget(QWidget *parent = nullptr);
     int CastRand();
+    label *bufLabel[5];// возможнные карты к покупке
+    label *bufHandLabel[5];// стол игрока
+    int money = 15;
+    bool *kto = new bool[5];
 private:
     qreal x1 = 0;
     qreal y1 = 400;
@@ -77,6 +81,7 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event)override;
+    void drawLine(QPaintEvent *event);
     //void paintEvent(QPaintEvent *event) override;
 };
 //! [0]

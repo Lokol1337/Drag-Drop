@@ -50,7 +50,7 @@
 
 #include <QtWidgets>
 
-#include "dragwidget.h"
+#include "playerdesk.h"
 #include "label.h"
 #include "QVector"
 #include <QTime>
@@ -67,64 +67,64 @@ int allCardCHD[10][4];// харакртеристики карт
 
 
 
-int DragWidget::CastRand(){ // получение мсек в реал времени
+int PlayerDesk::CastRand(){ // получение мсек в реал времени
     QTime t  = QTime::currentTime();
         return t.msec();
 }
 
-DragWidget::DragWidget(QWidget *parent)
+PlayerDesk::PlayerDesk(QWidget *parent)
     : QFrame(parent)
 {
     this->setParent(parent);
     allCardsName[0] = ":/images/card1.png";
-    allCardCHD[0][1] = 1;
-    allCardCHD[0][2] = 1;
-    allCardCHD[0][3] = 1;
+        allCardCHD[0][1] = 1;
+        allCardCHD[0][2] = 1;
+        allCardCHD[0][3] = 1;
 
-    allCardsName[1] = ":/images/card2.png";
-    allCardCHD[1][1] = 2;
-    allCardCHD[1][2] = 2;
-    allCardCHD[1][3] = 2;
+        allCardsName[1] = ":/images/card2.png";
+        allCardCHD[1][1] = 2;
+        allCardCHD[1][2] = 2;
+        allCardCHD[1][3] = 3;
 
-    allCardsName[2] = ":/images/card3.png";
-    allCardCHD[2][1] = 3;
-    allCardCHD[2][2] = 3;
-    allCardCHD[2][3] = 3;
+        allCardsName[2] = ":/images/card3.png";
+        allCardCHD[2][1] = 3;
+        allCardCHD[2][2] = 2;
+        allCardCHD[2][3] = 4;
 
-    allCardsName[3] = ":/images/card4.png";
-    allCardCHD[3][1] = 4;
-    allCardCHD[3][2] = 4;
-    allCardCHD[3][3] = 4;
+        allCardsName[3] = ":/images/card4.png";
+        allCardCHD[3][1] = 4;
+        allCardCHD[3][2] = 3;
+        allCardCHD[3][3] = 3;
 
-    allCardsName[4] = ":/images/card5.png";
-    allCardCHD[4][1] = 5;
-    allCardCHD[4][2] = 5;
-    allCardCHD[4][3] = 5;
+        allCardsName[4] = ":/images/card5.png";
+        allCardCHD[4][1] = 5;
+        allCardCHD[4][2] = 5;
+        allCardCHD[4][3] = 5;
 
-    allCardsName[5] = ":/images/card6.png";
-    allCardCHD[5][1] = 6;
-    allCardCHD[5][2] = 6;
-    allCardCHD[5][3] = 6;
+        allCardsName[5] = ":/images/card6.png";
+        allCardCHD[5][1] = 3;
+        allCardCHD[5][2] = 2;
+        allCardCHD[5][3] = 2;
 
-    allCardsName[6] = ":/images/card7.png";
-    allCardCHD[6][1] = 7;
-    allCardCHD[6][2] = 7;
-    allCardCHD[6][3] = 7;
+        allCardsName[6] = ":/images/card7.png";
+        allCardCHD[6][1] = 6;
+        allCardCHD[6][2] = 4;
+        allCardCHD[6][3] = 7;
 
-    allCardsName[7] = ":/images/card8.png";
-    allCardCHD[7][1] = 8;
-    allCardCHD[7][2] = 8;
-    allCardCHD[7][3] = 8;
+        allCardsName[7] = ":/images/card8.png";
+        allCardCHD[7][1] = 2;
+        allCardCHD[7][2] = 3;
+        allCardCHD[7][3] = 2;
 
-    allCardsName[8] = ":/images/card9.png";
-    allCardCHD[8][1] = 9;
-    allCardCHD[8][2] = 9;
-    allCardCHD[8][3] = 9;
+        allCardsName[8] = ":/images/card9.png";
+        allCardCHD[8][1] = 7;
+        allCardCHD[8][2] = 8;
+        allCardCHD[8][3] = 5;
 
-    allCardsName[9] = ":/images/card10.png";
-    allCardCHD[9][1] = 10;
-    allCardCHD[9][2] = 10;
-    allCardCHD[9][3] = 10;
+        allCardsName[9] = ":/images/card10.png";
+        allCardCHD[9][1] = 4;
+        allCardCHD[9][2] = 5;
+        allCardCHD[9][3] = 1;
 
     //получение данных о картах
 
@@ -142,7 +142,7 @@ DragWidget::DragWidget(QWidget *parent)
 
 }
 
-void DragWidget::dragEnterEvent(QDragEnterEvent *event)
+void PlayerDesk::dragEnterEvent(QDragEnterEvent *event)
 {
     if(event->source() == this && event->pos().y()>this->height()/2){ // разрешение на взятие карты в допустимом поле
        event->acceptProposedAction();
@@ -152,7 +152,7 @@ void DragWidget::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-void DragWidget::dragMoveEvent(QDragMoveEvent *event)
+void PlayerDesk::dragMoveEvent(QDragMoveEvent *event)
 {
         if(event->source() == this && event->pos().y()<this->height()/2 && money-dragBuf->c>=0){ // проверка на наличия денег для покупки (+возможность взять карту)
             event->setDropAction(Qt::MoveAction);
@@ -163,7 +163,7 @@ void DragWidget::dragMoveEvent(QDragMoveEvent *event)
         }
 }
 
-void DragWidget::dropEvent(QDropEvent *event)
+void PlayerDesk::dropEvent(QDropEvent *event)
 {
    if(event->source() == this && event->pos().y()<this->height()/2)
    {
@@ -194,7 +194,7 @@ void DragWidget::dropEvent(QDropEvent *event)
     }
 }
 
-void DragWidget::mousePressEvent(QMouseEvent *event)
+void PlayerDesk::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
